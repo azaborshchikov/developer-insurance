@@ -1,0 +1,39 @@
+.form {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    max-width: 400px;
+    padding: 0 16px;
+    margin: 0 auto;
+}
+
+.form > * + * {
+    margin-top: 16px;
+}
+
+.form label,
+div[role="form"] input {
+    display: block;
+    width: 100%;
+}
+
+
+.form > label {
+    text-align: left;
+}
+
+
+.form input {
+    padding: 4px 8px;
+    font-size: 16px;
+}
+
+.form button {
+    padding: 4px 8px;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.form .error {
+    color: darkred;
+}
