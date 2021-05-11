@@ -1,39 +1,31 @@
 import React, { useState } from 'react';
-import AgeStep from './AgeStep';
-import EmailStep from './EmailStep';
-import SummaryStep from './SummaryStep';
+import { flows, ProductIds } from './flows';
 
 interface BuyflowProps {
-    productId: ProductIds,
-};
-
-export enum ProductIds {
-    devIns = 'dev_ins'
-}
-
-const PRODUCT_IDS_TO_NAMES= {
-    [ProductIds.devIns]: 'Developer Insurance',
+  productId: ProductIds,
 }
 
 const Buyflow: React.FC<BuyflowProps> = (props) => {
-    const [currentStep, setStep] = useState('email');
-    const [collectedData, updateData] = useState({
-        'email': '',
-        'age': 0,
-    });
-    const getStepCallback = (nextStep:string) => (
-        (field: string, value: any) => {
-            updateData({...collectedData, [field]: value});
-            setStep(nextStep);
-        }
-    );
-    return <>
-        <h4>Buying {PRODUCT_IDS_TO_NAMES[props.productId]}</h4>
-        {(currentStep === 'email' && <EmailStep cb={getStepCallback('age')} />)
-        || (currentStep === 'age' && <AgeStep  cb={getStepCallback('summary')} />)
-        || (currentStep === 'summary' && <SummaryStep collectedData={collectedData} />)        
-        }
-    </>;
+  const [currentStep, setStep] = useState(0);
+  const [error, setError] = useState('');
+  const flow = flows[props.productId];
+  const { component: CurrentStep, validate } = flow.steps[currentStep];
+  const handleNext = () => {
+    const stepError = validate && validate(flow.store);
+    if (stepError) {
+      setError(stepError);
+    } else {
+      setStep(currentStep + 1);
+      setError('');
+    }
+  };
+  return <>
+    <h4>
+      Buying {flow.name}
+    </h4>
+    {error && <span>{error}</span>}
+    <CurrentStep onNext={handleNext} store={flow.store}/>
+  </>;
 };
 
 export default Buyflow;

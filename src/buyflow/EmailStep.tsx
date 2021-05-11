@@ -1,15 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { observer } from 'mobx-react-lite';
+import { StepComponent } from './types';
 
-interface EmailStepProps {
-    cb: (field: string, value: string) => void,
+interface Values {
+  email: string
 }
 
-const EmailStep: React.FC<EmailStepProps> = (props) => {
-    const [email, setEmail] = useState('');
-    return <>
-        <div>Email: <input type='email' onChange={({target: {value}}) => {setEmail(value)}} value={email}></input></div>
-        <button onClick={() => props.cb('email', email)}>Next</button>
-    </>;
+interface Store extends Values {
+  setEmail: (value: string) => void
+}
+
+const EmailStep: StepComponent<Store> = ({ onNext, store }) => {
+  return <>
+    <div>
+      Email:
+      <input
+        type="email"
+        onChange={({ target: { value } }) => {store.setEmail(value);}}
+        value={store.email}
+      />
+    </div>
+    <button onClick={onNext}>
+      Next
+    </button>
+  </>;
 };
 
-export default EmailStep;
+export const component = observer(EmailStep);
+
+export const validate = (values: Values) => !values.email && 'Enter email';

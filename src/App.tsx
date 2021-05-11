@@ -6,23 +6,28 @@ import {
   Switch,
   Route,
   Link,
-} from "react-router-dom";
-import Buyflow, { ProductIds } from './buyflow/Buyflow';
+} from 'react-router-dom';
+import { Buyflow, ProductIds } from './buyflow/';
 
 const App = () => {
   return (
     <Router>
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <img src={logo} className="App-logo" alt="logo"/>
         </header>
         <Switch>
           <Route path="/buy/insurance_dev">
-            <Buyflow productId={ProductIds.devIns} />
+            <Buyflow productId={ProductIds.devIns}/>
+          </Route>
+          <Route path="/buy/insurance_qa">
+            <Buyflow productId={ProductIds.qaIns}/>
           </Route>
           <Route path="/">
-          <p>Welcome to Getsafe's Developer Insurance</p>
-          <Link to="/buy/insurance_dev">Get started!</Link>
+            <p>Welcome to Getsafe's Developer Insurance</p>
+            <Link to="/buy/insurance_dev">Get started!</Link>
+            <p>Welcome to Getsafe's Quality Assurance Specialist Insurance</p>
+            <Link to="/buy/insurance_qa">Get started!</Link>
           </Route>
         </Switch>
       </div>

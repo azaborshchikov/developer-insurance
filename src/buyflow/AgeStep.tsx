@@ -1,15 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { observer } from 'mobx-react-lite';
+import { StepComponent } from './types';
 
-interface AgeStepProps {
-    cb: (field: string, value: number) => void,
+interface Values {
+  age: number
 }
 
-const AgeStep: React.FC<AgeStepProps> = (props) => {
-    const [age, setAge] = useState(0);
-    return <>
-        <div>Age: <input type='number' onChange={({target: {value}}) => {setAge(Number(value))}} value={age}></input></div>
-        <button onClick={() => props.cb('age', age)}>Next</button>
-    </>;
+interface Store extends Values {
+  setAge: (value: number) => void
+}
+
+const AgeStep: StepComponent<Store> = ({ onNext, store }) => {
+  return <>
+    <div>
+      Age:
+      <input
+        type="number"
+        onChange={({ target: { value } }) => {store.setAge(Number(value));}}
+        value={store.age}
+      />
+    </div>
+    <button onClick={onNext}>
+      Next
+    </button>
+  </>;
 };
 
-export default AgeStep;
+export const component = observer(AgeStep);
+
+export const validate = (values: Values) => (
+  (values.age < 18 && 'Too young')
+  || (values.age > 100 && 'Too old')
+);
