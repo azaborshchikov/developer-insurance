@@ -15,7 +15,7 @@ const StepAge: StepComponent<IStoreAge> = ({ onNext, store }) => {
       <input
         type="number"
         onChange={({ target: { value } }) => {store.setAge(Number(value));}}
-        value={store.age}
+        value={String(store.age)}
       />
     </label>
     <button onClick={onNext}>

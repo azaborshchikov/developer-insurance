@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { flows, ProductIds } from './flows';
+import './Buyflow.css';
 
 interface BuyflowProps {
   productId: ProductIds,
@@ -19,12 +20,13 @@ const Buyflow: React.FC<BuyflowProps> = (props) => {
       setError('');
     }
   };
+  useEffect(() => () => flow.reset(), [flow])
   return <>
     <h4>
       Buying {flow.name}
     </h4>
-    <div role="form">
-      {error && <div role="alert">{error}</div>}
+    <div role="form" className="form">
+      {error && <div role="alert" className="error">{error}</div>}
       <CurrentStep onNext={handleNext} store={flow.store}/>
     </div>
   </>;

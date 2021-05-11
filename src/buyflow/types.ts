@@ -14,7 +14,8 @@ export interface Flow {
     component: StepComponent
     validate?: Validate
   }>,
-  store: Store
+  store: Store,
+  reset: () => void
 }
 
 export interface IStep {

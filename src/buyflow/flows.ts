@@ -18,7 +18,7 @@ const devIns: Flow = {
     StepEmail,
     StepAge,
     { component: StepSummary }
-  )
+  ),
 };
 
 const qaIns: Flow = {
@@ -38,10 +38,16 @@ export const flows: Record<ProductIds, Flow> = {
 function createFlowSteps (...steps: Array<IStep>) {
   return {
     steps,
-    store: composeStore(...steps)
+    store: composeStore(...steps),
+    reset: function () {
+      this.store = composeStore(...steps)
+    }
   };
 }
 
-function composeStore (...stores: Array<IStep>) {
-  return observable(Object.assign({}, ...stores.map(({ store }) => store || {})));
+function composeStore (...steps: Array<IStep>) {
+  return observable(Object.assign(
+    {},
+    ...steps.map(({ store }) => store || {})
+  ));
 }
