@@ -23,8 +23,10 @@ const Buyflow: React.FC<BuyflowProps> = (props) => {
     <h4>
       Buying {flow.name}
     </h4>
-    {error && <span>{error}</span>}
-    <CurrentStep onNext={handleNext} store={flow.store}/>
+    <div role="form">
+      {error && <div role="alert">{error}</div>}
+      <CurrentStep onNext={handleNext} store={flow.store}/>
+    </div>
   </>;
 };
 

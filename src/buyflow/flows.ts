@@ -1,42 +1,47 @@
-import { Product } from './types';
-import {
-  DevInsStore,
-  DevInsValues,
-  QaInsStore,
-  QaInsValues
-} from './store';
-import * as NameStep from './NameStep';
-import * as EmailStep from './EmailStep';
-import * as AgeStep from './AgeStep';
-import SummaryStep from './SummaryStep';
+import { observable } from 'mobx';
+import { Flow, IStep } from './types';
+
+import * as StepName from './steps/StepName';
+import * as StepEmail from './steps/StepEmail';
+import * as StepAge from './steps/StepAge';
+import StepSummary from './steps/StepSummary';
 
 export enum ProductIds {
   devIns = 'dev_ins',
   qaIns = 'qa_ins'
 }
 
-const devIns: Product<DevInsValues, DevInsStore> = {
+const devIns: Flow = {
   name: 'Developer Insurance',
-  steps: [
-    NameStep,
-    EmailStep,
-    AgeStep,
-    { component: SummaryStep },
-  ],
-  store: new DevInsStore()
+  ...createFlowSteps(
+    StepName,
+    StepEmail,
+    StepAge,
+    { component: StepSummary }
+  )
 };
 
-const qaIns: Product<QaInsValues, QaInsStore> = {
+const qaIns: Flow = {
   name: 'Quality Assurance Specialist Insurance',
-  steps: [
-    EmailStep,
-    AgeStep,
-    { component: SummaryStep },
-  ],
-  store: new DevInsStore()
+  ...createFlowSteps(
+    StepEmail,
+    StepAge,
+    { component: StepSummary }
+  )
 };
 
-export const flows: Record<ProductIds, Product> = {
+export const flows: Record<ProductIds, Flow> = {
   [ProductIds.devIns]: devIns,
   [ProductIds.qaIns]: qaIns
 };
+
+function createFlowSteps (...steps: Array<IStep>) {
+  return {
+    steps,
+    store: composeStore(...steps)
+  };
+}
+
+function composeStore (...stores: Array<IStep>) {
+  return observable(Object.assign({}, ...stores.map(({ store }) => store || {})));
+}

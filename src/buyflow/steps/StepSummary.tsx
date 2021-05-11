@@ -1,16 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { StepComponent } from './types';
+import { StepComponent, Store } from '../types';
 
-interface Values {
+interface IStepSummary extends Store {
   firstName?: string,
   lastName?: string,
   email: string,
   age: number
 }
 
-const SummaryStep: StepComponent<Values> = ({ store }) => {
+const StepSummary: StepComponent<IStepSummary> = ({ store }) => {
   return <>
     {store.firstName && (
       <div>
@@ -36,4 +36,4 @@ const SummaryStep: StepComponent<Values> = ({ store }) => {
   </>;
 };
 
-export default observer(SummaryStep);
+export default observer(StepSummary);

@@ -1,19 +1,24 @@
 import { FC } from 'react';
 
-export type Values = any
-export type Store = any
+export type Store = any;
+export type Validate = (values: Store) => false | string;
 
 export type StepComponent<S = Store> = FC<{
   onNext: () => void,
   store: S
 }>
 
-export interface Product<T = Values, S = Store> {
-  name: string,
+export interface Flow {
+  name: string
   steps: Array<{
-    component: StepComponent,
-    validate?: (values: T) => false | string
+    component: StepComponent
+    validate?: Validate
   }>,
-  store: S
+  store: Store
 }
 
+export interface IStep {
+  component: StepComponent
+  validate?: Validate
+  store?: Store
+}
