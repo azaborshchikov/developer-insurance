@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`checks summary step render 1`] = `
+<div>
+  <div>
+    First Name: 
+    John
+  </div>
+  <div>
+    Last Name: 
+    Doe
+  </div>
+  <div>
+    Email: 
+    a@b.c
+  </div>
+  <div>
+    Age: 
+    25
+  </div>
+  <div>
+    <a
+      href="/?purchased=dev_ins"
+    >
+      Purchase
+    </a>
+  </div>
+</div>
+`;
